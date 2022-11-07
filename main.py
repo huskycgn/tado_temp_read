@@ -1,5 +1,5 @@
 import requests
-from cred import username, password
+from cred import username, password, homeid
 import datetime
 
 endpoint_general = 'https://my.tado.com/api/v2/me'
@@ -12,7 +12,7 @@ parameters = {
 # response = requests.get(url=endpoint_general, params=parameters)
 
 
-endpoint_home = 'https://my.tado.com/api/v2/homes/592322/zones/1/state'
+endpoint_home = f'https://my.tado.com/api/v2/homes/{homeid}/zones/1/state'
 
 response = requests.get(url=endpoint_home, params=parameters)
 
