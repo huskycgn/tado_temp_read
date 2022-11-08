@@ -32,6 +32,17 @@ connection = mariadb.connect(
     database='temps')
 
 cursor = connection.cursor()
-# print(cursor.execute(operation='SELECT * FROM WZ;'))
 
-# print(get_tempdata())
+temp_dict = get_tempdata()
+time = temp_dict['time']
+temp = temp_dict['temp']
+humid = temp_dict['humid']
+
+
+statement = f"INSERT INTO WZ (timestamp, temp, humid) VALUES('{time}', {temp}, {humid});"
+
+print(statement)
+
+cursor.execute(statement)
+
+connection.commit()
