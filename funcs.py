@@ -1,5 +1,4 @@
 import datetime
-import mariadb
 import requests
 
 from cred import *
@@ -25,24 +24,24 @@ def get_tempdata():
     return output_dict
 
 
-connection = mariadb.connect(
-    host=db_host,
-    user=db_user,
-    password=db_pass,
-    database='temps')
+def get_hue():
+    # Temp Sensor has ID 6
+    timestamp = datetime.datetime.now()
+    timestamp = format(timestamp, '%Y%m%dT%H%M')
+    ENDPOINT = f'http://192.168.178.41/api/{HUE_USER}/sensors/6'
 
-cursor = connection.cursor()
+    raw_data = requests.get(url=ENDPOINT)
 
-temp_dict = get_tempdata()
-time = temp_dict['time']
-temp = temp_dict['temp']
-humid = temp_dict['humid']
+    data = raw_data.json()
+
+    hue_temp = data['state']['temperature'] / 100
+
+    temp_dict = {
+        'time': timestamp,
+        'temp': hue_temp,
+    }
+
+    return hue_temp
 
 
-statement = f"INSERT INTO WZ (timestamp, temp, humid) VALUES('{time}', {temp}, {humid});"
 
-print(statement)
-
-cursor.execute(statement)
-
-connection.commit()
