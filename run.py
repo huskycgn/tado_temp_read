@@ -17,8 +17,7 @@ temp = temp_dict['temp']
 humid = temp_dict['humid']
 
 statement = f"INSERT INTO WZ (timestamp, temp, humid) VALUES('{time}', {temp}, {humid});"
-
-# print(statement)
+print(statement)
 
 cursor.execute(statement)
 
@@ -27,7 +26,7 @@ cursor.execute(statement)
 temp_dict = get_hue()
 time = temp_dict['time']
 temp = temp_dict['temp']
-humid = 'NULL'
+humid = 0
 
 statement = f"INSERT INTO KU (timestamp, temp, humid) VALUES('{time}', {temp}, {humid});"
 
