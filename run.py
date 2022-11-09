@@ -26,9 +26,11 @@ cursor.execute(statement)
 temp_dict = get_hue()
 time = temp_dict['time']
 temp = temp_dict['temp']
-humid = 0
+humid = 0.00
 
 statement = f"INSERT INTO KU (timestamp, temp, humid) VALUES('{time}', {temp}, {humid});"
+
+cursor.execute(statement)
 
 # commit inserts
 
