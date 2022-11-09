@@ -41,7 +41,7 @@ def get_hue():
         'temp': hue_temp,
     }
 
-    return hue_temp
+    return temp_dict
 
 
 

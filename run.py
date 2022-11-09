@@ -24,7 +24,7 @@ cursor.execute(statement)
 
 # Hue data - no humidity
 
-temp_dict = get_tempdata()
+temp_dict = get_hue()
 time = temp_dict['time']
 temp = temp_dict['temp']
 humid = 'NULL'
