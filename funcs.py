@@ -1,6 +1,8 @@
 import datetime
 import requests
-
+import matplotlib.pyplot as plt
+import numpy as np
+import mariadb
 from cred import *
 
 
@@ -16,11 +18,11 @@ def get_tempdata():
 
     json_data = (response.json())
 
-    temp = json_data['sensorDataPoints']['insideTemperature']['celsius']
-    humid = json_data['sensorDataPoints']['humidity']['percentage']
+    temp = json_data[ 'sensorDataPoints' ][ 'insideTemperature' ][ 'celsius' ]
+    humid = json_data[ 'sensorDataPoints' ][ 'humidity' ][ 'percentage' ]
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, '%Y%m%dT%H%M')
-    output_dict = {'time': timestamp, 'temp': temp, 'humid': humid}
+    output_dict = { 'time': timestamp, 'temp': temp, 'humid': humid }
     return output_dict
 
 
@@ -28,13 +30,13 @@ def get_hue():
     # Temp Sensor has ID 6
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, '%Y%m%dT%H%M')
-    ENDPOINT = f'http://192.168.178.41/api/{HUE_USER}/sensors/6'
+    ENDPOINT = f'http://{HUE_IP}/api/{HUE_USER}/sensors/6'
 
     raw_data = requests.get(url=ENDPOINT)
 
     data = raw_data.json()
 
-    hue_temp = data['state']['temperature'] / 100
+    hue_temp = data[ 'state' ][ 'temperature' ] / 100
 
     temp_dict = {
         'time': timestamp,
@@ -44,4 +46,41 @@ def get_hue():
     return temp_dict
 
 
+def createchart(hours: int):
+    '''returns graphs for temperature - expectes int as number of desired hours.'''
+    for r in ROOMS:
+        # ROOMS is a dict with the room name as a key and the table name in the db is the value.
+        connection = mariadb.connect(host=db_host, user=db_user, password=db_pass, db=db_name)
+        statement = f'SELECT * FROM {ROOMS[ r ]} ORDER BY timestamp DESC LIMIT {int((hours*60)/5)}'
+        cursor = connection.cursor()
+        cursor.execute(statement)
 
+        data = cursor.fetchall()
+
+        timestamp = [ ]
+        temp = [ ]
+
+        for d in data:
+            timestamp.append(d[ 0 ])
+            temp.append(d[ 1 ])
+
+        timestamp.reverse()
+        temp.reverse()
+
+        newtslist = [ ]
+
+        for ts in timestamp:
+            year = ts[ 0:4 ]
+            month = ts[ 4:6 ]
+            day = ts[ 6:8 ]
+            hour = ts[ 9:11 ]
+            minute = ts[ 11:13 ]
+            newts = f'{year}-{month}-{day}T{hour}:{minute}'
+            newts = np.datetime64(newts)
+            newtslist.append(newts)
+
+        plt.plot(newtslist, temp)
+        plt.title(r)
+        plt.xlabel('t')
+        plt.ylabel('Temp °C')
+        plt.show()
