@@ -1,3 +1,5 @@
 from funcs import createchart
 
-createchart(48)
+days = 1
+
+createchart(72)

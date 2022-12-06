@@ -1,6 +1,9 @@
 import datetime
+
+import pylab as pl
 import requests
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import numpy as np
 import mariadb
 from cred import *
@@ -47,7 +50,7 @@ def get_hue():
 
 
 def createchart(hours: int):
-    '''returns graphs for temperature - expectes int as number of desired hours.'''
+    """returns graphs for temperature - expects int as number of desired hours."""
     for r in ROOMS:
         # ROOMS is a dict with the room name as a key and the table name in the db is the value.
         connection = mariadb.connect(host=db_host, user=db_user, password=db_pass, db=db_name)
@@ -78,9 +81,16 @@ def createchart(hours: int):
             newts = f'{year}-{month}-{day}T{hour}:{minute}'
             newts = np.datetime64(newts)
             newtslist.append(newts)
-
-        plt.plot(newtslist, temp)
-        plt.title(r)
-        plt.xlabel('t')
-        plt.ylabel('Temp °C')
+        plt.figure(figsize=(15, 10))
+        ax = plt.axes()
+        ax.set_facecolor('#E5B8F4')
+        plt.plot(newtslist, temp, color='#2D033B')
+        plt.title(f'{r} - {hours} hours', fontsize=20, pad=20)
+        # plt.xlabel('Time')
+        plt.ylabel('Temp °C', fontsize=20)
+        plt.grid()
+        plt.xticks(rotation=45)
+        # print(f'{ROOMS[ r ]} Max {max(temp)}')
+        # print(f'{ROOMS[ r ]} Min {min(temp)}')
+        plt.savefig(f'{ROOMS[ r ]}.png')
         plt.show()
