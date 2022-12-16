@@ -35,3 +35,7 @@ cursor.execute(statement)
 # commit inserts
 
 connection.commit()
+
+days = 1
+
+createchart(days * 24)

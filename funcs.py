@@ -49,7 +49,7 @@ def get_hue():
     return temp_dict
 
 
-def createchart(hours: int):
+def createchart(hours: int = 36):
     """returns graphs for temperature - expects int as number of desired hours."""
     for r in ROOMS:
         # ROOMS is a dict with the room name as a key and the table name in the db is the value.
