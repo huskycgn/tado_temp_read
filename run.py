@@ -17,8 +17,6 @@ temp = temp_dict['temp']
 humid = temp_dict['humid']
 
 statement = f"INSERT INTO WZ (timestamp, temp, humid) VALUES('{time}', {temp}, {humid});"
-print(statement)
-
 cursor.execute(statement)
 
 # Hue data - no humidity
@@ -35,6 +33,8 @@ cursor.execute(statement)
 # commit inserts
 
 connection.commit()
+
+# Create charts
 
 days = 1
 

@@ -1,9 +1,6 @@
 import datetime
-
-import pylab as pl
 import requests
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import numpy as np
 import mariadb
 from cred import *
