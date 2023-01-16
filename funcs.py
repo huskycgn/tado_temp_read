@@ -92,5 +92,5 @@ def createchart(hours: int = 36):
         # print(f'{ROOMS[ r ]} Max {max(temp)}')
         # print(f'{ROOMS[ r ]} Min {min(temp)}')
         plt.savefig(f'{graph_folder}{ROOMS[ r ]}.png')
-        plt.close()
         plt.show()
+        plt.close()
