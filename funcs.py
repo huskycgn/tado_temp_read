@@ -1,6 +1,7 @@
 import datetime
 import requests
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import numpy as np
 import mariadb
 from cred import *
@@ -83,6 +84,8 @@ def createchart(hours: int = 36):
         timestamp = format(timestamp, '%Y-%m-%d %H:%M')
         ax = plt.axes()
         ax.set_facecolor('#E5B8F4')
+        dtFmt = mdates.DateFormatter('%d.%m. - %H:%M')
+        plt.gca().xaxis.set_major_formatter(dtFmt)
         plt.plot(newtslist, temp, color='#2D033B')
         plt.title(f'{r} - {hours} hours Temp\nCreated at: {timestamp}',  fontsize=20, pad=20)
         # plt.xlabel('Time')
