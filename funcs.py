@@ -84,11 +84,17 @@ def createchart(hours: int = 36):
         timestamp = format(timestamp, '%Y-%m-%d %H:%M')
         ax = plt.axes()
         ax.set_facecolor('#E5B8F4')
+        nptemp = np.array(temp)
+        mean_temp = round(np.mean(nptemp), 2)
+        print(mean_temp)
+        ax.text(0.1, 0.9, f'Mean: {mean_temp}°C\n'
+                          f'Max:   {max(temp)}°C\n'
+                          f'Min:    {min(temp)}°C'
+                          f'', transform=ax.transAxes, fontsize=15, bbox=dict(alpha=0.2, color='#2D033B'))
         dtFmt = mdates.DateFormatter('%d.%m. - %H:%M')
         plt.gca().xaxis.set_major_formatter(dtFmt)
         plt.plot(newtslist, temp, color='#2D033B')
         plt.title(f'{r} - {hours} hours Temp\nCreated at: {timestamp}',  fontsize=20, pad=20)
-        # plt.xlabel('Time')
         plt.ylabel('Temp °C', fontsize=20)
         plt.grid()
         plt.xticks(rotation=45)
