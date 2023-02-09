@@ -39,3 +39,4 @@ connection.commit()
 days = 1
 
 createchart(days * 24)
+createchart_month(3)
