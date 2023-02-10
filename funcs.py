@@ -191,8 +191,8 @@ def create_comp_chart(hours: int = 36):
     plt.ylabel('Temp °C', fontsize=20)
     plt.grid()
     plt.xticks(rotation=45)
-    plt.savefig(f'{graph_folder}_all.png')
     plt.legend()
+    plt.savefig(f'{graph_folder}temps_all.png')
     plt.show()
     plt.close()
     return None
