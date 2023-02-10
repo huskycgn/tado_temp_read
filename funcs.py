@@ -32,9 +32,9 @@ def get_hue() -> dict:
     # Temp Sensor has ID 6
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, '%Y%m%dT%H%M')
-    ENDPOINT = f'http://{HUE_IP}/api/{HUE_USER}/sensors/6'
+    endpoint: str = f'http://{HUE_IP}/api/{HUE_USER}/sensors/6'
 
-    raw_data = requests.get(url=ENDPOINT)
+    raw_data = requests.get(url=endpoint)
 
     data = raw_data.json()
 
@@ -177,7 +177,7 @@ def create_comp_chart(hours: int = 36):
     """
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, '%Y-%m-%d %H:%M')
-    plt.figure(figsize=(15, 10))
+    plt.figure(figsize=(15, 10), facecolor='#F5F5F5')
     ax = plt.axes()
     ax.set_facecolor('#E8E2E2')
     for r in ROOMS:
