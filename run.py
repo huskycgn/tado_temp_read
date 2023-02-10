@@ -1,5 +1,4 @@
 from funcs import *
-import mariadb
 
 
 # Tado data

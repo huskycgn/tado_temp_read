@@ -8,7 +8,7 @@ import mariadb
 from cred import *
 
 
-def get_tempdata():
+def get_tempdata() -> dict:
     parameters = {
         'username': username,
         'password': password
@@ -28,7 +28,7 @@ def get_tempdata():
     return output_dict
 
 
-def get_hue():
+def get_hue() -> dict:
     # Temp Sensor has ID 6
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, '%Y%m%dT%H%M')
@@ -48,8 +48,11 @@ def get_hue():
     return temp_dict
 
 
-def write_db(statement: str):
-    """Accepts and executes SQL Statements"""
+def write_db(statement: str) -> None:
+    """Accepts and executes SQL Statements
+    :param statement:
+    :return:
+    """
     connection = mariadb.connect(
         host=db_host,
         user=db_user,
@@ -59,12 +62,15 @@ def write_db(statement: str):
     cursor = connection.cursor()
     cursor.execute(statement)
     connection.commit()
+    return None
 
 
-def pulldata_db(datapoints: int, room: str):
+def pulldata_db(datapoints: int, room: str) -> pd.DataFrame:
     """Pulls data from DB"""
+    print(room)
     connection = mariadb.connect(host=db_host, user=db_user, password=db_pass, db=db_name)
-    statement = f'SELECT * FROM {ROOMS[ room ]} ORDER BY timestamp DESC LIMIT {int(datapoints)}'
+    statement = f'SELECT * FROM {room} ORDER BY timestamp DESC LIMIT {int(datapoints)}'
+    print(statement)
     cursor = connection.cursor()
     cursor.execute(statement)
 
@@ -99,15 +105,17 @@ def pulldata_db(datapoints: int, room: str):
     return df_temp
 
 
-def plotgraph(data):
+def plotgraph(data: object) -> object:
+    """returns plot-object"""
     return plt.plot(data, color='#2D033B')
 
 
 def createchart(hours: int = 36):
-    """returns graphs for temperature - expects int as number of desired hours."""
+    """returns graphs for temperature - expects int as number of desired hours.
+    :param hours: 
+    """
     for r in ROOMS:
-        data = pulldata_db(hours * (60 / 5), r)
-        print(data)
+        data = pulldata_db(int(hours * (60 / 5)), ROOMS[r][0])
         timestamp = datetime.datetime.now()
         timestamp = format(timestamp, '%Y-%m-%d %H:%M')
         plt.figure(figsize=(15, 10))
@@ -129,13 +137,16 @@ def createchart(hours: int = 36):
         plt.savefig(f'{graph_folder}{r}.png')
         plt.show()
         plt.close()
+    return None
 
 
 def createchart_month(months: int = 3):
-    """returns graphs for temperature - expects int as number of desired hours."""
+    """returns graphs for temperature - expects int as number of desired hours.
+    :param months: 
+    """
     for r in ROOMS:
         # ROOMS is a dict with the room name as a key and the table name in the db is the value.
-        df_temp = pulldata_db((round(months * 30 * 24 * 60) / 5), r)
+        df_temp = pulldata_db(int((round(months * 30 * 24 * 60) / 5)), ROOMS[r][0])
         df_temp_day = df_temp.resample('D', on='time').mean()
         plt.figure(figsize=(15, 10))
         timestamp_print = datetime.datetime.now()
@@ -157,3 +168,30 @@ def createchart_month(months: int = 3):
         plt.savefig(f'{graph_folder}{r}_3_Mon.png')
         plt.show()
         plt.close()
+    return None
+
+
+def create_comp_chart(hours: int = 36):
+    """returns graphs for temperature for all rooms - expects int as number of desired hours.
+    :param hours:
+    """
+    timestamp = datetime.datetime.now()
+    timestamp = format(timestamp, '%Y-%m-%d %H:%M')
+    plt.figure(figsize=(15, 10))
+    ax = plt.axes()
+    ax.set_facecolor('#E8E2E2')
+    for r in ROOMS:
+        data = pulldata_db(int(hours * (60 / 5)), ROOMS[r][0])
+        d = data.set_index('time')
+        plt.plot(d, label=r, color=ROOMS[r][1])
+    dtFmt = mdates.DateFormatter('%d.%m. - %H:%M')
+    plt.gca().xaxis.set_major_formatter(dtFmt)
+    plt.title(f'All rooms - {hours} Hours Temp\nCreated at: {timestamp}', fontsize=20, pad=20)
+    plt.ylabel('Temp °C', fontsize=20)
+    plt.grid()
+    plt.xticks(rotation=45)
+    plt.savefig(f'{graph_folder}{all}.png')
+    plt.legend()
+    plt.show()
+    plt.close()
+    return None
