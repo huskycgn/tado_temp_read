@@ -92,7 +92,8 @@ def plotgraph(data):
 def createchart(hours: int = 36):
     """returns graphs for temperature - expects int as number of desired hours."""
     for r in ROOMS:
-        data = pulldata_db(hours * 5, r)
+        data = pulldata_db(hours * (60 / 5), r)
+        print(data)
         timestamp = datetime.datetime.now()
         timestamp = format(timestamp, '%Y-%m-%d %H:%M')
         plt.figure(figsize=(15, 10))
