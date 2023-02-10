@@ -1,13 +1,6 @@
 from funcs import *
 import mariadb
 
-connection = mariadb.connect(
-    host=db_host,
-    user=db_user,
-    password=db_pass,
-    database='temps')
-
-cursor = connection.cursor()
 
 # Tado data
 
@@ -17,7 +10,7 @@ temp = temp_dict['temp']
 humid = temp_dict['humid']
 
 statement = f"INSERT INTO WZ (timestamp, temp, humid) VALUES('{time}', {temp}, {humid});"
-cursor.execute(statement)
+write_db(statement)
 
 # Hue data - no humidity
 
@@ -28,11 +21,8 @@ humid = 0.00
 
 statement = f"INSERT INTO KU (timestamp, temp, humid) VALUES('{time}', {temp}, {humid});"
 
-cursor.execute(statement)
+write_db(statement)
 
-# commit inserts
-
-connection.commit()
 
 # Create charts
 

@@ -48,7 +48,21 @@ def get_hue():
     return temp_dict
 
 
-def pulldata_db(datapoints, room):
+def write_db(statement: str):
+    """Accepts and executes SQL Statements"""
+    connection = mariadb.connect(
+        host=db_host,
+        user=db_user,
+        password=db_pass,
+        database='temps')
+
+    cursor = connection.cursor()
+    cursor.execute(statement)
+    connection.commit()
+
+
+def pulldata_db(datapoints: int, room: str):
+    """Pulls data from DB"""
     connection = mariadb.connect(host=db_host, user=db_user, password=db_pass, db=db_name)
     statement = f'SELECT * FROM {ROOMS[ room ]} ORDER BY timestamp DESC LIMIT {int(datapoints)}'
     cursor = connection.cursor()
