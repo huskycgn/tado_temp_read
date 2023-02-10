@@ -67,10 +67,8 @@ def write_db(statement: str) -> None:
 
 def pulldata_db(datapoints: int, room: str) -> pd.DataFrame:
     """Pulls data from DB"""
-    print(room)
     connection = mariadb.connect(host=db_host, user=db_user, password=db_pass, db=db_name)
     statement = f'SELECT * FROM {room} ORDER BY timestamp DESC LIMIT {int(datapoints)}'
-    print(statement)
     cursor = connection.cursor()
     cursor.execute(statement)
 
