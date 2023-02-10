@@ -112,6 +112,9 @@ def createchart(hours: int = 36):
     """returns graphs for temperature - expects int as number of desired hours.
     :param hours: 
     """
+    # Rooms needs to be in the form of:
+    # {'room_name': ['table_in_db', '#colorcode'], 'another_room_name': [
+    # 'another_table_in_db', '#another_color_code']}
     for r in ROOMS:
         data = pulldata_db(int(hours * (60 / 5)), ROOMS[r][0])
         timestamp = datetime.datetime.now()
@@ -188,7 +191,7 @@ def create_comp_chart(hours: int = 36):
     plt.ylabel('Temp °C', fontsize=20)
     plt.grid()
     plt.xticks(rotation=45)
-    plt.savefig(f'{graph_folder}{all}.png')
+    plt.savefig(f'{graph_folder}_all.png')
     plt.legend()
     plt.show()
     plt.close()
