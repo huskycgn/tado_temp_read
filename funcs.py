@@ -178,7 +178,7 @@ def create_comp_chart(hours: int = 36):
     """
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, '%Y-%m-%d %H:%M')
-    plt.figure(figsize=(15, 10), facecolor='#F5F5F5')
+    plt.figure(figsize=(15, 10), facecolor='#F5F5F5', dpi=300)
     ax = plt.axes()
     ax.set_facecolor('#E8E2E2')
     for r in ROOMS:
@@ -187,7 +187,7 @@ def create_comp_chart(hours: int = 36):
         plt.plot(d, label=r, color=ROOMS[ r ][ 1 ])
     dtFmt = mdates.DateFormatter('%d.%m. - %H:%M')
     plt.gca().xaxis.set_major_formatter(dtFmt)
-    plt.title(f'All rooms - {hours} Hours Temp\nCreated at: {timestamp}', fontsize=20, pad=20, dpi=300)
+    plt.title(f'All rooms - {hours} Hours Temp\nCreated at: {timestamp}', fontsize=20, pad=20)
     plt.ylabel('Temp °C', fontsize=20)
     plt.grid()
     plt.xticks(rotation=45)
