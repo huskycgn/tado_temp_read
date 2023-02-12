@@ -2,7 +2,6 @@ import datetime
 import requests
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import plotly.express as pl
 import pandas as pd
 import numpy as np
 import mariadb
