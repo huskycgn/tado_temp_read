@@ -2,6 +2,7 @@ import datetime
 import requests
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import plotly.express as pl
 import pandas as pd
 import numpy as np
 import mariadb
@@ -116,10 +117,10 @@ def createchart(hours: int = 36):
     # {'room_name': ['table_in_db', '#colorcode'], 'another_room_name': [
     # 'another_table_in_db', '#another_color_code']}
     for r in ROOMS:
-        data = pulldata_db(int(hours * (60 / 5)), ROOMS[r][0])
+        data = pulldata_db(int(hours * (60 / 5)), ROOMS[ r ][ 0 ])
         timestamp = datetime.datetime.now()
         timestamp = format(timestamp, '%Y-%m-%d %H:%M')
-        plt.figure(figsize=(15, 10))
+        plt.figure(figsize=(15, 10), dpi=300)
         ax = plt.axes()
         ax.set_facecolor('#E5B8F4')
         ax.text(0.1, 0.9, f'Mean: {round(float(data.mean(numeric_only=True)), 2)}°C\n'
@@ -147,9 +148,9 @@ def createchart_month(months: int = 3):
     """
     for r in ROOMS:
         # ROOMS is a dict with the room name as a key and the table name in the db is the value.
-        df_temp = pulldata_db(int((round(months * 30 * 24 * 60) / 5)), ROOMS[r][0])
+        df_temp = pulldata_db(int((round(months * 30 * 24 * 60) / 5)), ROOMS[ r ][ 0 ])
         df_temp_day = df_temp.resample('D', on='time').mean()
-        plt.figure(figsize=(15, 10))
+        plt.figure(figsize=(15, 10), dpi=300)
         timestamp_print = datetime.datetime.now()
         timestamp_print = format(timestamp_print, '%Y-%m-%d %H:%M')
 
@@ -182,12 +183,12 @@ def create_comp_chart(hours: int = 36):
     ax = plt.axes()
     ax.set_facecolor('#E8E2E2')
     for r in ROOMS:
-        data = pulldata_db(int(hours * (60 / 5)), ROOMS[r][0])
+        data = pulldata_db(int(hours * (60 / 5)), ROOMS[ r ][ 0 ])
         d = data.set_index('time')
-        plt.plot(d, label=r, color=ROOMS[r][1])
+        plt.plot(d, label=r, color=ROOMS[ r ][ 1 ])
     dtFmt = mdates.DateFormatter('%d.%m. - %H:%M')
     plt.gca().xaxis.set_major_formatter(dtFmt)
-    plt.title(f'All rooms - {hours} Hours Temp\nCreated at: {timestamp}', fontsize=20, pad=20)
+    plt.title(f'All rooms - {hours} Hours Temp\nCreated at: {timestamp}', fontsize=20, pad=20, dpi=300)
     plt.ylabel('Temp °C', fontsize=20)
     plt.grid()
     plt.xticks(rotation=45)
