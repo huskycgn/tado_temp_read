@@ -42,7 +42,8 @@ def get_weather():
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, '%Y%m%dT%H%M')
     json_data = response.json()
-    output_dict = { 'timestamp_iso': timestamp_iso, 'time': timestamp }
+    cond = json_data[ 'current' ][ 'condition' ][ 'text' ]
+    output_dict = { 'timestamp_iso': timestamp_iso, 'time': timestamp, 'cond': cond}
     temp = float(json_data[ 'current' ][ 'temp_c' ])
     humid = float(json_data[ 'current' ][ 'humidity' ])
     output_dict[ 'temp' ] = temp
