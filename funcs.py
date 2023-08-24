@@ -23,15 +23,39 @@ def get_tempdata() -> dict:
     temp = json_data[ 'sensorDataPoints' ][ 'insideTemperature' ][ 'celsius' ]
     humid = json_data[ 'sensorDataPoints' ][ 'humidity' ][ 'percentage' ]
     timestamp = datetime.datetime.now()
+    timestamp_iso = datetime.datetime.now()
     timestamp = format(timestamp, '%Y%m%dT%H%M')
-    output_dict = { 'time': timestamp, 'temp': temp, 'humid': humid }
+    timestamp_iso = format(timestamp_iso, '%Y-%m-%dT%H:%M')
+    output_dict = { 'time': timestamp, 'timestamp_iso': timestamp_iso, 'temp': temp, 'humid': humid }
+    return output_dict
+
+
+def get_weather():
+    api_key = WEATHER_API_KEY
+    city = 'cologne'
+    base_url = 'http://api.weatherapi.com/v1/current.json?key='
+    req_url = base_url + api_key + '&q=' + city
+
+    response = requests.get(url=req_url)
+    timestamp_iso = datetime.datetime.now()
+    timestamp_iso = format(timestamp_iso, '%Y-%m-%dT%H:%M')
+    timestamp = datetime.datetime.now()
+    timestamp = format(timestamp, '%Y%m%dT%H%M')
+    json_data = response.json()
+    output_dict = { 'timestamp_iso': timestamp_iso, 'time': timestamp }
+    temp = float(json_data[ 'current' ][ 'temp_c' ])
+    humid = float(json_data[ 'current' ][ 'humidity' ])
+    output_dict[ 'temp' ] = temp
+    output_dict[ 'humid' ] = humid
     return output_dict
 
 
 def get_hue() -> dict:
     # Temp Sensor has ID 6
     timestamp = datetime.datetime.now()
+    timestamp_iso = datetime.datetime.now()
     timestamp = format(timestamp, '%Y%m%dT%H%M')
+    timestamp_iso = format(timestamp_iso, '%Y-%m-%dT%H:%M')
     endpoint: str = f'http://{HUE_IP}/api/{HUE_USER}/sensors/6'
 
     raw_data = requests.get(url=endpoint)
@@ -42,6 +66,7 @@ def get_hue() -> dict:
 
     temp_dict = {
         'time': timestamp,
+        'timestamp_iso': timestamp_iso,
         'temp': hue_temp,
     }
 
