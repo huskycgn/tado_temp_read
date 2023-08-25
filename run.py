@@ -12,6 +12,17 @@ statement = f"INSERT INTO WZ (timestamp, timestamp_iso, temp, humid) VALUES('{ti
 
 write_db(statement)
 
+# Shelly data
+temp_dict = get_shelly()
+time = temp_dict['time']
+timestamp_iso = temp_dict['timestamp_iso']
+temp = temp_dict['temp']
+humid = temp_dict['humid']
+
+statement = f"INSERT INTO SZ (timestamp, timestamp_iso, temp, humid) VALUES('{time}', '{timestamp_iso}', {temp}, {humid});"
+
+write_db(statement)
+
 
 # Hue data - no humidity
 temp_dict = get_hue()
