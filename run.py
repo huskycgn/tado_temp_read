@@ -8,7 +8,7 @@ timestamp_iso = temp_dict['timestamp_iso']
 temp = temp_dict['temp']
 humid = temp_dict['humid']
 
-statement = f"INSERT INTO WZ (timestamp, timestamp_iso, temp, humid) VALUES('{time}', '{timestamp_iso}', {temp}, {humid});"
+statement = f"INSERT INTO WZ (timestamp, time, temp, humid) VALUES('{time}', '{timestamp_iso}', {temp}, {humid});"
 
 write_db(statement)
 
@@ -19,7 +19,7 @@ timestamp_iso = temp_dict['timestamp_iso']
 temp = temp_dict['temp']
 humid = temp_dict['humid']
 
-statement = f"INSERT INTO SZ (timestamp, timestamp_iso, temp, humid) VALUES('{time}', '{timestamp_iso}', {temp}, {humid});"
+statement = f"INSERT INTO SZ (timestamp, time, temp, humid) VALUES('{time}', '{timestamp_iso}', {temp}, {humid});"
 
 write_db(statement)
 
@@ -31,7 +31,7 @@ timestamp_iso = temp_dict['timestamp_iso']
 temp = temp_dict['temp']
 humid = 0.00
 
-statement = f"INSERT INTO KU (timestamp, timestamp_iso, temp, humid) VALUES('{time}', '{timestamp_iso}', {temp}, {humid});"
+statement = f"INSERT INTO KU (timestamp, time, temp, humid) VALUES('{time}', '{timestamp_iso}', {temp}, {humid});"
 
 write_db(statement)
 
@@ -43,7 +43,7 @@ timestamp_iso = temp_dict['timestamp_iso']
 temp = temp_dict['temp']
 humid = temp_dict['humid']
 cond = temp_dict['cond']
-statement = f"INSERT INTO OU (timestamp, timestamp_iso, temp, humid, weathercond) VALUES('{time}','{timestamp_iso}', {temp}, {humid}, '{cond}');"
+statement = f"INSERT INTO OU (timestamp, time, temp, humid, weathercond) VALUES('{time}','{timestamp_iso}', {temp}, {humid}, '{cond}');"
 
 write_db(statement)
 

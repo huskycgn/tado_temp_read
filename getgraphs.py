@@ -1,4 +1,4 @@
-from funcs import createchart, createchart_month, create_comp_chart_plotly, create_plotly
+from funcs import createchart, createchart_month
 
 days = 1
 months = 3

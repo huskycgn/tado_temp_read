@@ -102,7 +102,7 @@ def write_db(statement: str) -> None:
     :return:
     """
     connection = mariadb.connect(
-        host=db_host, user=db_user, password=db_pass, database="temps"
+        host=db_host, user=db_user, password=db_pass, database=db_name
     )
 
     cursor = connection.cursor()
