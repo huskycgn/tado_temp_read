@@ -60,10 +60,3 @@ utcts = datetime.datetime.utcnow()
 statement = f"INSERT INTO OU (time, unixtimestamp, timestamp, time_iso, temp, humid, weathercond) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}','{timestamp_iso}', {temp}, {humid}, '{cond}');"
 
 write_db(statement)
-
-# Create charts
-days = 1
-
-createchart(days * 24)
-createchart_month(3)
-create_comp_chart(24)
