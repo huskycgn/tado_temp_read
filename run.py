@@ -12,7 +12,7 @@ humid = temp_dict['humid']
 unixtime = time.time()
 utcts = datetime.datetime.utcnow()
 
-statement = f"INSERT INTO WZ (utc, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
+statement = f"INSERT INTO WZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
 write_db(statement)
 
@@ -26,7 +26,7 @@ humid = temp_dict['humid']
 unixtime = time.time()
 utcts = datetime.datetime.utcnow()
 
-statement = f"INSERT INTO SZ (utc, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
+statement = f"INSERT INTO SZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
 write_db(statement)
 
@@ -41,7 +41,7 @@ humid = 0.00
 unixtime = time.time()
 utcts = datetime.datetime.utcnow()
 
-statement = f"INSERT INTO KU (utc, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
+statement = f"INSERT INTO KU (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
 write_db(statement)
 
@@ -57,7 +57,7 @@ cond = temp_dict['cond']
 unixtime = time.time()
 utcts = datetime.datetime.utcnow()
 
-statement = f"INSERT INTO OU (utc, unixtimestamp, timestamp, time_iso, temp, humid, weathercond) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}','{timestamp_iso}', {temp}, {humid}, '{cond}');"
+statement = f"INSERT INTO OU (time, unixtimestamp, timestamp, time_iso, temp, humid, weathercond) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}','{timestamp_iso}', {temp}, {humid}, '{cond}');"
 
 write_db(statement)
 
