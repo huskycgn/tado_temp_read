@@ -7,7 +7,6 @@ import numpy as np
 import mariadb
 from cred import *
 
-
 def get_tempdata() -> dict:
     parameters = {"username": username, "password": password}
 
