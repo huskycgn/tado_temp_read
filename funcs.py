@@ -21,7 +21,7 @@ def get_tempdata() -> dict:
     timestamp = datetime.datetime.now()
     timestamp_iso = datetime.datetime.now()
     timestamp = format(timestamp, "%Y%m%dT%H%M")
-    timestamp_iso = format(timestamp_iso, "%Y-%m-%dT%H:%M")
+    timestamp_iso = format(timestamp_iso, "%Y-%m-%d %H:%M:%S")
     output_dict = {
         "time": timestamp,
         "timestamp_iso": timestamp_iso,
@@ -39,7 +39,7 @@ def get_weather():
 
     response = requests.get(url=req_url)
     timestamp_iso = datetime.datetime.now()
-    timestamp_iso = format(timestamp_iso, "%Y-%m-%dT%H:%M")
+    timestamp_iso = format(timestamp_iso, "%Y-%m-%d %H:%M:%S")
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, "%Y%m%dT%H%M")
     json_data = response.json()
@@ -61,7 +61,7 @@ def get_shelly():
     response = requests.get(url=base_url, params=parameters)
     json_data = response.json()
     timestamp_iso = datetime.datetime.now()
-    timestamp_iso = format(timestamp_iso, "%Y-%m-%dT%H:%M")
+    timestamp_iso = format(timestamp_iso, "%Y-%m-%d %H:%M:%S")
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, "%Y%m%dT%H%M")
     output_dict = {"timestamp_iso": timestamp_iso, "time": timestamp}
@@ -77,7 +77,7 @@ def get_hue() -> dict:
     timestamp = datetime.datetime.now()
     timestamp_iso = datetime.datetime.now()
     timestamp = format(timestamp, "%Y%m%dT%H%M")
-    timestamp_iso = format(timestamp_iso, "%Y-%m-%dT%H:%M")
+    timestamp_iso = format(timestamp_iso, "%Y-%m-%d %H:%M:%S")
     endpoint: str = f"http://{HUE_IP}/api/{HUE_USER}/sensors/6"
 
     raw_data = requests.get(url=endpoint)
