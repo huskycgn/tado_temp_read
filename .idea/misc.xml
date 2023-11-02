@@ -2,9 +2,10 @@
 <project version="4">
   <component name="Black">
     <option name="enabledOnReformat" value="true" />
+    <option name="enabledOnSave" value="true" />
     <option name="executionMode" value="BINARY" />
     <option name="pathToExecutable" value="$USER_HOME$/opt/anaconda3/bin/black" />
-    <option name="sdkUUID" value="76842659-2db8-46a1-a6c0-22e63ced5e39" />
+    <option name="sdkName" value="Python 3.10 (tado_temp_read)" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (tado_temp_read)" project-jdk-type="Python SDK" />
   <component name="PyPackaging">

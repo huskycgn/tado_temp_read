@@ -7,10 +7,11 @@ import numpy as np
 import mariadb
 from cred import *
 
-def get_tempdata() -> dict:
+
+def get_tempdata(roomid) -> dict:
     parameters = {"username": username, "password": password}
 
-    endpoint_home = f"https://my.tado.com/api/v2/homes/{homeid}/zones/1/state"
+    endpoint_home = f"https://my.tado.com/api/v2/homes/{homeid}/zones/{roomid}/state"
 
     response = requests.get(url=endpoint_home, params=parameters)
 
