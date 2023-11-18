@@ -2,7 +2,7 @@ from funcs import *
 import time
 import datetime
 
-## Tado data
+# Tado data
 
 # Living room
 
