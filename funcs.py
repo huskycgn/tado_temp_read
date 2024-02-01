@@ -9,11 +9,32 @@ from cred import *
 
 
 def get_tempdata(roomid) -> dict:
-    parameters = {"username": username, "password": password}
+    def get_tado_secret():
+
+        endpoint = "https://auth.tado.com/oauth/token"
+
+        secparameters = {
+            "username": username,
+            "password": password,
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+            "grant_type": "password",
+        }
+
+        acctoken = requests.post(url=endpoint, params=secparameters).json()
+        return acctoken["access_token"]
+
+    token = get_tado_secret()
+
+    headers = {"Authorization": f"Bearer {token}"}
+
+    parameters = {
+        "Content-Type": "application/json",
+    }
 
     endpoint_home = f"https://my.tado.com/api/v2/homes/{homeid}/zones/{roomid}/state"
 
-    response = requests.get(url=endpoint_home, params=parameters)
+    response = requests.get(url=endpoint_home, params=parameters, headers=headers)
 
     json_data = response.json()
 
