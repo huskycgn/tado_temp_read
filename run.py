@@ -87,7 +87,3 @@ write_db(statement)
 
 # Create charts
 days = 1
-
-createchart(days * 24)
-createchart_month(3)
-create_comp_chart(24)
