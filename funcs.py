@@ -1,30 +1,40 @@
 import datetime
 import requests
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import pandas as pd
-import numpy as np
-import mariadb
+import psycopg2
 from cred import *
 
 
 def get_tempdata(roomid) -> dict:
-    def get_tado_secret():
+    def tado_key_handler():
+        with open("refresh_token.txt", "r") as f:
+            refresh_token_old = f.readline()
 
-        endpoint = "https://auth.tado.com/oauth/token"
+        token = requests.post(
+            "https://login.tado.com/oauth2/token",
+            params=dict(
+                client_id="1bb50063-6b0c-4d11-bd99-387f4a91cc46",
+                grant_type="refresh_token",
+                refresh_token=refresh_token_old,
+            ),
+        ).json()
 
-        secparameters = {
-            "username": username,
-            "password": password,
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-            "grant_type": "password",
-        }
+        # print(token)
 
-        acctoken = requests.post(url=endpoint, params=secparameters).json()
-        return acctoken["access_token"]
+        access_token = token["access_token"]
+        refresh_token = token["refresh_token"]
 
-    token = get_tado_secret()
+        # print(access_token)
+        # print(refresh_token)
+
+        with open("token.txt", "w") as f:
+            f.write(token["access_token"])
+
+        with open("refresh_token.txt", "w") as f:
+            f.write(token["refresh_token"])
+
+        return access_token, refresh_token
+
+    token = tado_key_handler()[0]
 
     headers = {"Authorization": f"Bearer {token}"}
 
@@ -122,168 +132,11 @@ def write_db(statement: str) -> None:
     :param statement:
     :return:
     """
-    connection = mariadb.connect(
+    connection = psycopg2.connect(
         host=db_host, user=db_user, password=db_pass, database=db_name
     )
 
     cursor = connection.cursor()
     cursor.execute(statement)
     connection.commit()
-    return None
-
-
-def pulldata_db(datapoints: int, room: str) -> pd.DataFrame:
-    """Pulls data from DB"""
-    connection = mariadb.connect(
-        host=db_host, user=db_user, password=db_pass, db=db_name
-    )
-    statement = f"SELECT timestamp ,temp FROM {room} ORDER BY timestamp DESC LIMIT {int(datapoints)}"
-    cursor = connection.cursor()
-    cursor.execute(statement)
-
-    data = cursor.fetchall()
-
-    timestamp = []
-    temp = []
-
-    for d in data:
-        timestamp.append(d[0])
-        temp.append(d[1])
-
-    timestamp.reverse()
-    temp.reverse()
-
-    newtslist = []
-
-    for ts in timestamp:
-        year = ts[0:4]
-        month = ts[4:6]
-        day = ts[6:8]
-        hour = ts[9:11]
-        minute = ts[11:13]
-        newts = f"{year}-{month}-{day}T{hour}:{minute}"
-        newts = np.datetime64(newts)
-        newtslist.append(newts)
-
-    # print(temp, newtslist)
-
-    d = {"time": newtslist, "temp": temp}
-    df_temp = pd.DataFrame(data=d, index=d["time"])
-    return df_temp
-
-
-def plotgraph(data: object) -> object:
-    """returns plot-object"""
-    return plt.plot(data, color="#2D033B")
-
-
-def createchart(hours: int = 36):
-    """returns graphs for temperature - expects int as number of desired hours.
-    :param hours:
-    """
-    # Rooms needs to be in the form of:
-    # {'room_name': ['table_in_db', '#colorcode'], 'another_room_name': [
-    # 'another_table_in_db', '#another_color_code']}
-    for r in ROOMS:
-        data = pulldata_db(int(hours * (60 / 5)), ROOMS[r][0])
-        timestamp = datetime.datetime.now()
-        timestamp = format(timestamp, "%Y-%m-%d %H:%M")
-        plt.figure(figsize=(15, 10), dpi=300)
-        ax = plt.axes()
-        ax.set_facecolor("#E5B8F4")
-        ax.text(
-            0.1,
-            0.9,
-            f"Mean: {round(float(data.mean(numeric_only=True)), 2)}°C\n"
-            f"Max:   {round(float(data.max(numeric_only=True)), 2)}°C\n"
-            f"Min:    {round(float(data.min(numeric_only=True)), 2)}°C"
-            f"",
-            transform=ax.transAxes,
-            fontsize=15,
-            bbox=dict(alpha=0.2, color="#2D033B"),
-        )
-        dtFmt = mdates.DateFormatter("%d.%m. - %H:%M")
-        plt.gca().xaxis.set_major_formatter(dtFmt)
-        # plt.plot(data, color='#2D033B')
-        data = data.set_index("time")
-        plt.title(
-            f"{r} - {hours} Hours Temp\nCreated at: {timestamp}", fontsize=20, pad=20
-        )
-        plotgraph(data)
-        plt.ylabel("Temp °C", fontsize=20)
-        plt.grid()
-        plt.xticks(rotation=45)
-        plt.savefig(f"{graph_folder}{r}.png")
-        plt.show()
-        plt.close()
-    return None
-
-
-def createchart_month(months: int = 3):
-    """returns graphs for temperature - expects int as number of desired hours.
-    :param months:
-    """
-    for r in ROOMS:
-        # ROOMS is a dict with the room name as a key and the table name in the db is the value.
-        df_temp = pulldata_db(int((round(months * 30 * 24 * 60) / 5)), ROOMS[r][0])
-        df_temp_day = df_temp.resample("D", on="time").mean()
-        plt.figure(figsize=(15, 10), dpi=300)
-        timestamp_print = datetime.datetime.now()
-        timestamp_print = format(timestamp_print, "%Y-%m-%d %H:%M")
-
-        ax = plt.axes()
-        ax.set_facecolor("#E5B8F4")
-        ax.text(
-            0.1,
-            0.9,
-            f"Mean: {round(float(df_temp_day.mean()), 2)}°C\n"
-            f"Max:   {round(float(df_temp_day.max()), 2)}°C\n"
-            f"Min:    {round(float(df_temp_day.min()), 2)}°C"
-            f"",
-            transform=ax.transAxes,
-            fontsize=15,
-            bbox=dict(alpha=0.2, color="#2D033B"),
-        )
-        dtFmt = mdates.DateFormatter("%d.%m.")
-        plt.gca().xaxis.set_major_formatter(dtFmt)
-        plotgraph(df_temp_day)
-        plt.title(
-            f"{r} - {months} Month daily mean Temp\nCreated at: {timestamp_print}",
-            fontsize=20,
-            pad=20,
-        )
-        plt.ylabel("Temp °C", fontsize=20)
-        plt.grid()
-        plt.xticks(rotation=45)
-        plt.savefig(f"{graph_folder}{r}_3_Mon.png")
-        plt.show()
-        plt.close()
-    return None
-
-
-def create_comp_chart(hours: int = 36):
-    """returns graphs for temperature for all rooms - expects int as number of desired hours.
-    :param hours:
-    """
-    timestamp = datetime.datetime.now()
-    timestamp = format(timestamp, "%Y-%m-%d %H:%M")
-    plt.figure(figsize=(15, 10), facecolor="#F5F5F5", dpi=300)
-    ax = plt.axes()
-    ax.set_facecolor("#E8E2E2")
-    for r in ROOMS:
-        data = pulldata_db(int(hours * (60 / 5)), ROOMS[r][0])
-        d = data.set_index("time")
-        plt.plot(d, label=r, color=ROOMS[r][1])
-    dtFmt = mdates.DateFormatter("%d.%m. - %H:%M")
-    plt.gca().xaxis.set_major_formatter(dtFmt)
-    plt.title(
-        f"All rooms - {hours} Hours Temp\nCreated at: {timestamp}", fontsize=20, pad=20
-    )
-    plt.ylabel("Temp °C", fontsize=20)
-    plt.grid()
-    plt.xticks(rotation=45)
-    plt.legend()
-    plt.savefig(f"{graph_folder}temps_all.png")
-    plt.show()
-    plt.close()
     return None
