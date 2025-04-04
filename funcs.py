@@ -141,4 +141,5 @@ def write_db(statement: str) -> None:
     connection.commit()
     return None
 
-#thank you tado for making this even more complicated!
+
+# thank you tado for making this even more complicated!
