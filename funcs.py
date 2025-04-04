@@ -32,6 +32,8 @@ def get_tempdata(roomid) -> dict:
         with open("refresh_token.txt", "w") as f:
             f.write(token["refresh_token"])
 
+        print(access_token, refresh_token)
+
         return access_token, refresh_token
 
     token = tado_key_handler()[0]
