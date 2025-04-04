@@ -1,4 +1,5 @@
 import requests
+import json
 
 req = requests.post(
     "https://login.tado.com/oauth2/device_authorize",
@@ -22,6 +23,8 @@ req2 = requests.post(
 )
 
 print(req2.json())
+
+json.loads(req2.json())
 
 refresh_token = req2.json()["refresh_token"]
 access_token = req2.json()["access_token"]
