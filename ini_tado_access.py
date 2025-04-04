@@ -22,3 +22,9 @@ req2 = requests.post(
 )
 
 print(req2.json())
+
+with open("refresh_token.txt", "w") as f:
+    f.write(req2["refresh_token"])
+
+with open("token.txt", "w") as f:
+    f.write(req2["access_token"])
