@@ -140,3 +140,5 @@ def write_db(statement: str) -> None:
     cursor.execute(statement)
     connection.commit()
     return None
+
+#thank you tado for making this even more complicated!
