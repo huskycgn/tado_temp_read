@@ -66,7 +66,7 @@ def get_tempdata(roomid) -> dict:
 def get_weather():
     api_key = WEATHER_API_KEY
     city = "cologne"
-    base_url = "http://api.weatherapi.com/v1/current.json?key="
+    base_url = "https://api.weatherapi.com/v1/current.json?key="
     req_url = base_url + api_key + "&q=" + city
 
     response = requests.get(url=req_url)
