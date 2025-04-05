@@ -24,7 +24,7 @@ req2 = requests.post(
 
 print(req2.json())
 
-req2 = json.loads(req2.json())
+req2 = dict(req2.json())
 
 refresh_token = req2["refresh_token"]
 access_token = req2["access_token"]
