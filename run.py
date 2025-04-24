@@ -77,10 +77,11 @@ timestamp_iso = temp_dict["timestamp_iso"]
 temp = temp_dict["temp"]
 humid = temp_dict["humid"]
 cond = temp_dict["cond"]
+precipitation = temp_dict["precipitation"]
 
 unixtime = time.time()
 utcts = datetime.datetime.utcnow()
 
-statement = f"INSERT INTO OU (time, unixtimestamp, timestamp, time_iso, temp, humid, weathercond) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}','{timestamp_iso}', {temp}, {humid}, '{cond}');"
+statement = f"INSERT INTO OU (time, unixtimestamp, timestamp, time_iso, temp, humid, weathercond, precipitation) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}','{timestamp_iso}', {temp}, {humid}, '{cond}', {precipitation});"
 
 write_db(statement)

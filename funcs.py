@@ -81,8 +81,10 @@ def get_weather():
     output_dict = {"timestamp_iso": timestamp_iso, "time": timestamp, "cond": cond}
     temp = float(json_data["current"]["temp_c"])
     humid = float(json_data["current"]["humidity"])
+    precipitation = float(json_data["current"]["precip_mm"])
     output_dict["temp"] = temp
     output_dict["humid"] = humid
+    output_dict["precipitation"] = precipitation
     return output_dict
 
 
