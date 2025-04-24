@@ -4,6 +4,10 @@ import psycopg2
 from cred import *
 
 
+def get_timestamp_utc():
+    return str(datetime.datetime.now(datetime.timezone.utc)).replace("+00:00", "")
+
+
 def get_tempdata(roomid) -> dict:
     def tado_key_handler():
         with open("refresh_token.txt", "r") as f:
@@ -18,7 +22,7 @@ def get_tempdata(roomid) -> dict:
             ),
         ).json()
 
-        print(token)
+        # print(token)
 
         access_token = token["access_token"]
         refresh_token = token["refresh_token"]
@@ -32,7 +36,7 @@ def get_tempdata(roomid) -> dict:
         with open("refresh_token.txt", "w") as f:
             f.write(token["refresh_token"])
 
-        print(access_token, refresh_token)
+        # print(access_token, refresh_token)
 
         return access_token, refresh_token
 
