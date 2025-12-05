@@ -22,13 +22,13 @@ def get_tempdata(roomid) -> dict:
             ),
         ).json()
 
-        # print(token)
+        print(token)
 
         access_token = token["access_token"]
         refresh_token = token["refresh_token"]
 
-        # print(access_token)
-        # print(refresh_token)
+        print(access_token)
+        print(refresh_token)
 
         with open("token.txt", "w") as f:
             f.write(token["access_token"])
@@ -105,6 +105,7 @@ def get_shelly():
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, "%Y%m%dT%H%M")
     output_dict = {"timestamp_iso": timestamp_iso, "time": timestamp}
+    print(json_data)
     temp = float(json_data["data"]["device_status"]["temperature:0"]["tC"])
     humid = float(json_data["data"]["device_status"]["humidity:0"]["rh"])
     output_dict["temp"] = temp
@@ -151,3 +152,5 @@ def write_db(statement: str) -> None:
 
 
 # thank you tado for making this even more complicated!
+
+print(get_shelly())

@@ -36,21 +36,23 @@ write_db(statement)
 
 ## Shelly data
 
-# Bathroom
+# Bedroom
 
-temp_dict = get_shelly()
-time_stamp_legacy = temp_dict["time"]
-timestamp_iso = temp_dict["timestamp_iso"]
-temp = temp_dict["temp"]
-humid = temp_dict["humid"]
+try:
+    temp_dict = get_shelly()
+    time_stamp_legacy = temp_dict["time"]
+    timestamp_iso = temp_dict["timestamp_iso"]
+    temp = temp_dict["temp"]
+    humid = temp_dict["humid"]
 
-unixtime = time.time()
-utcts = get_timestamp_utc()
+    unixtime = time.time()
+    utcts = get_timestamp_utc()
 
-statement = f"INSERT INTO SZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
+    statement = f"INSERT INTO SZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
-write_db(statement)
-
+    write_db(statement)
+except KeyError:
+    pass
 
 # Hue data - no humidity
 
