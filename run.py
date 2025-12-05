@@ -43,7 +43,6 @@ temp_dict = get_shelly()
 if temp_dict:
     # print(temp_dict)
     time_stamp_legacy = temp_dict["time"]
-    time_stamp_legacy = temp_dict["time"]
     timestamp_iso = temp_dict["timestamp_iso"]
     temp = temp_dict["temp"]
     humid = temp_dict["humid"]
