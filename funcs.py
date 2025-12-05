@@ -106,6 +106,7 @@ def get_shelly():
     timestamp = format(timestamp, "%Y%m%dT%H%M")
     output_dict = {"timestamp_iso": timestamp_iso, "time": timestamp}
     # print(json_data)
+    print(json_data["isok"])
     if not json_data["isok"]:
         return False
     else:
