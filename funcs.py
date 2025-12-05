@@ -22,13 +22,13 @@ def get_tempdata(roomid) -> dict:
             ),
         ).json()
 
-        print(token)
+        #print(token)
 
         access_token = token["access_token"]
         refresh_token = token["refresh_token"]
 
-        print(access_token)
-        print(refresh_token)
+        #print(access_token)
+        #print(refresh_token)
 
         with open("token.txt", "w") as f:
             f.write(token["access_token"])

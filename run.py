@@ -51,7 +51,7 @@ try:
     statement = f"INSERT INTO SZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
     write_db(statement)
-except KeyError:
+except:
     pass
 
 # Hue data - no humidity
