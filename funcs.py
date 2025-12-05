@@ -105,16 +105,19 @@ def get_shelly():
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, "%Y%m%dT%H%M")
     output_dict = {"timestamp_iso": timestamp_iso, "time": timestamp}
-    print(json_data)
+    # print(json_data)
     # print(json_data["isok"])
     if not json_data["isok"]:
         return False
     else:
-        temp = float(json_data["data"]["device_status"]["temperature:0"]["tC"])
-        humid = float(json_data["data"]["device_status"]["humidity:0"]["rh"])
-        output_dict["temp"] = temp
-        output_dict["humid"] = humid
-        return output_dict
+        try:
+            temp = float(json_data["data"]["device_status"]["temperature:0"]["tC"])
+            humid = float(json_data["data"]["device_status"]["humidity:0"]["rh"])
+            output_dict["temp"] = temp
+            output_dict["humid"] = humid
+            return output_dict
+        except KeyError:
+            return False
 
 
 def get_hue() -> dict:
@@ -156,5 +159,3 @@ def write_db(statement: str) -> None:
 
 
 # thank you tado for making this even more complicated!
-
-print(get_shelly())

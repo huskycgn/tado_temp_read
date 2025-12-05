@@ -1,6 +1,5 @@
 from funcs import *
 import time
-import datetime
 
 # Tado data
 
