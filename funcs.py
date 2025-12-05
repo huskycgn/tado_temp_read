@@ -96,7 +96,7 @@ def get_shelly():
     api_key = SHELLY_API_KEY
     parameters = {"id": SHELLY_DEVICE_ID, "auth_key": api_key}
 
-    base_url = "https://shelly-77-eu.shelly.cloud/device/status"
+    base_url = "https://shelly-226-eu.shelly.cloud/device/status"
 
     response = requests.get(url=base_url, params=parameters)
     json_data = response.json()

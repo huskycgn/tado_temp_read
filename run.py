@@ -38,8 +38,11 @@ write_db(statement)
 
 # Bedroom
 
-try:
-    temp_dict = get_shelly()
+
+temp_dict = get_shelly()
+if temp_dict:
+    # print(temp_dict)
+    time_stamp_legacy = temp_dict["time"]
     time_stamp_legacy = temp_dict["time"]
     timestamp_iso = temp_dict["timestamp_iso"]
     temp = temp_dict["temp"]
@@ -51,8 +54,6 @@ try:
     statement = f"INSERT INTO SZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
     write_db(statement)
-except:
-    pass
 
 # Hue data - no humidity
 
