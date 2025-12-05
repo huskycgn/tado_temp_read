@@ -107,7 +107,7 @@ def get_shelly():
     output_dict = {"timestamp_iso": timestamp_iso, "time": timestamp}
     # print(json_data)
     # print(json_data["isok"])
-    if json_data["isok"] is False:
+    if not json_data["isok"]:
         return False
     else:
         temp = float(json_data["data"]["device_status"]["temperature:0"]["tC"])
