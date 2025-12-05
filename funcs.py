@@ -22,13 +22,13 @@ def get_tempdata(roomid) -> dict:
             ),
         ).json()
 
-        #print(token)
+        # print(token)
 
         access_token = token["access_token"]
         refresh_token = token["refresh_token"]
 
-        #print(access_token)
-        #print(refresh_token)
+        # print(access_token)
+        # print(refresh_token)
 
         with open("token.txt", "w") as f:
             f.write(token["access_token"])
@@ -105,12 +105,15 @@ def get_shelly():
     timestamp = datetime.datetime.now()
     timestamp = format(timestamp, "%Y%m%dT%H%M")
     output_dict = {"timestamp_iso": timestamp_iso, "time": timestamp}
-    print(json_data)
-    temp = float(json_data["data"]["device_status"]["temperature:0"]["tC"])
-    humid = float(json_data["data"]["device_status"]["humidity:0"]["rh"])
-    output_dict["temp"] = temp
-    output_dict["humid"] = humid
-    return output_dict
+    # print(json_data)
+    if not json_data["isok"]:
+        return False
+    else:
+        temp = float(json_data["data"]["device_status"]["temperature:0"]["tC"])
+        humid = float(json_data["data"]["device_status"]["humidity:0"]["rh"])
+        output_dict["temp"] = temp
+        output_dict["humid"] = humid
+        return output_dict
 
 
 def get_hue() -> dict:
