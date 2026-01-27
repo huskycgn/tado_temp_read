@@ -10,7 +10,7 @@ def get_timestamp_utc():
 
 def get_tempdata(roomid) -> dict:
     def tado_key_handler():
-        with open("refresh_token.txt", "r") as f:
+        with open(f"{WORKING_DIR}refresh_token.txt", "r") as f:
             refresh_token_old = f.readline()
 
         token = requests.post(
@@ -30,11 +30,11 @@ def get_tempdata(roomid) -> dict:
         # print(access_token)
         # print(refresh_token)
 
-        with open("token.txt", "w") as f:
-            f.write(token["access_token"])
+        with open(f"{WORKING_DIR}token.txt", "w") as f:
+            f.write(token[f"{WORKING_DIR}access_token"])
 
-        with open("refresh_token.txt", "w") as f:
-            f.write(token["refresh_token"])
+        with open(f"{WORKING_DIR}refresh_token.txt", "w") as f:
+            f.write(token[f"{WORKING_DIR}refresh_token"])
 
         # print(access_token, refresh_token)
 

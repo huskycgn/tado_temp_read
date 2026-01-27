@@ -23,3 +23,5 @@ graph_folder = "/Volumes/home/temps/"  # Where you want the graph .pngs to be st
 WEATHER_API_KEY = "YourWeatherServiceAPI"
 SHELLY_API_KEY = "YourShellyAPI-KEY"
 SHELLY_DEVICE_ID = "YourShellyDeviceID"
+
+WORKING_DIR = "/path/to/files/"
