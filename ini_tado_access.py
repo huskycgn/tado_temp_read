@@ -1,6 +1,8 @@
 import requests
 import json
 
+from cred import WORKING_DIR
+
 req = requests.post(
     "https://login.tado.com/oauth2/device_authorize",
     params=dict(
@@ -29,8 +31,8 @@ req2 = dict(req2.json())
 refresh_token = req2["refresh_token"]
 access_token = req2["access_token"]
 
-with open("refresh_token.txt", "w") as f:
+with open(f"{WORKING_DIR}refresh_token.txt", "w") as f:
     f.write(refresh_token)
 
-with open("token.txt", "w") as f:
+with open(f"{WORKING_DIR}token.txt", "w") as f:
     f.write(access_token)
