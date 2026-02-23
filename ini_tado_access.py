@@ -1,5 +1,4 @@
 import requests
-import json
 
 from cred import WORKING_DIR
 
