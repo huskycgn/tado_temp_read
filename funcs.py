@@ -174,5 +174,7 @@ def write_db(statement: str) -> None:
     connection.commit()
     return None
 
+def output_temp(name, result):
+    return f"{name} {result}°C"
 
 # thank you tado for making this even more complicated!

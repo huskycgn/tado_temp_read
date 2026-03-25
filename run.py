@@ -19,7 +19,7 @@ utcts = get_timestamp_utc()
 
 statement = f"INSERT INTO WZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
-print(f"Wohnzimmer: {temp}")
+print(output_temp("Wohnzimmer", temp))
 
 write_db(statement)
 
@@ -37,6 +37,7 @@ utcts = get_timestamp_utc()
 statement = f"INSERT INTO BZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
 print(f"Badezimmer: {temp}")
+print(output_temp("Badezimmer", temp))
 
 write_db(statement)
 
@@ -58,7 +59,7 @@ if temp_dict:
 
     statement = f"INSERT INTO SZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
-    print(f"Schlafzimmer: {temp}")
+    print(output_temp("Schlafzimmer", temp))
 
     write_db(statement)
 
@@ -77,7 +78,7 @@ utcts = get_timestamp_utc()
 
 statement = f"INSERT INTO KU (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
-print(f"Küche: {temp}")
+print(output_temp("Küche", temp))
 
 write_db(statement)
 
@@ -96,7 +97,7 @@ utcts = get_timestamp_utc()
 
 statement = f"INSERT INTO OU (time, unixtimestamp, timestamp, time_iso, temp, humid, weathercond, precipitation) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}','{timestamp_iso}', {temp}, {humid}, '{cond}', {precipitation});"
 
-print(f"Wetter: {temp}")
+print(output_temp("Wetter", temp))
 
 write_db(statement)
 
