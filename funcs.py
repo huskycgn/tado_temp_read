@@ -1,7 +1,20 @@
 import datetime
+import socket
+
 import requests
 import psycopg2
 from cred import *
+
+# --- IPv4-ONLY PATCH START ---
+orig_getaddrinfo = socket.getaddrinfo
+
+def patched_getaddrinfo(*args, **kwargs):
+    responses = orig_getaddrinfo(*args, **kwargs)
+    # Filtert alle IPv6 (AF_INET6) Adressen gnadenlos aus
+    return [res for res in responses if res[0] == socket.AF_INET]
+
+socket.getaddrinfo = patched_getaddrinfo
+# --- IPv4-ONLY PATCH END ---
 
 
 def get_timestamp_utc():
