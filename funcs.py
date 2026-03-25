@@ -53,7 +53,10 @@ def get_tempdata(roomid) -> dict:
 
     response = requests.get(url=endpoint_home, params=parameters, headers=headers)
 
+    # print(response.headers)
+
     json_data = response.json()
+
 
     temp = json_data["sensorDataPoints"]["insideTemperature"]["celsius"]
     humid = json_data["sensorDataPoints"]["humidity"]["percentage"]
