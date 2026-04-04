@@ -27,7 +27,7 @@ class Room:
             )
             # response = requests.get(url=base_url)
             json_data = response.json()
-            print(json_data)
+            # print(json_data)
             # print(json_data["current_C"])
         except:
             return 0

@@ -1,8 +1,9 @@
 from funcs import *
 import time
+from datetime import datetime
 import classes
 
-# Tado data
+start_time = time.time()
 
 # Living room
 
@@ -19,6 +20,10 @@ statement = f"INSERT INTO WZ (time, unixtimestamp, timestamp, time_iso, temp) VA
 
 write_db(statement)
 
+print(output_temp("Wohnzimmer", temp))
+
+write_db(statement)
+
 # Bathroom
 
 temp_dict = get_tempdata(4)
@@ -31,6 +36,9 @@ unixtime = time.time()
 utcts = get_timestamp_utc()
 
 statement = f"INSERT INTO BZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
+
+print(f"Badezimmer: {temp}")
+print(output_temp("Badezimmer", temp))
 
 write_db(statement)
 
@@ -52,6 +60,8 @@ if temp_dict:
 
     statement = f"INSERT INTO SZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
+    print(output_temp("Schlafzimmer", temp))
+
     write_db(statement)
 
 # Hue data - no humidity
@@ -68,6 +78,8 @@ unixtime = time.time()
 utcts = get_timestamp_utc()
 
 statement = f"INSERT INTO KU (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
+
+print(output_temp("Küche", temp))
 
 write_db(statement)
 
@@ -86,4 +98,10 @@ utcts = get_timestamp_utc()
 
 statement = f"INSERT INTO OU (time, unixtimestamp, timestamp, time_iso, temp, humid, weathercond, precipitation) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}','{timestamp_iso}', {temp}, {humid}, '{cond}', {precipitation});"
 
+print(output_temp("Wetter", temp))
+
 write_db(statement)
+
+end_time = time.time()
+print(f"Elapsed time: {end_time - start_time:.2f} seconds")
+print(f"Execution time: {datetime.now()}")
