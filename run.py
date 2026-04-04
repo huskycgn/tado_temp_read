@@ -1,23 +1,24 @@
 from funcs import *
 import time
 from datetime import datetime
+import classes
 
 start_time = time.time()
 
-# Tado data
-
 # Living room
 
-temp_dict = get_tempdata(1)
+temp_dict = classes.Room(name="Wohnzimmer", dbtable="WZ", ipaddress="192.168.178.178").get_shelly_lan()
 time_stamp_legacy = temp_dict["time"]
 timestamp_iso = temp_dict["timestamp_iso"]
 temp = temp_dict["temp"]
-humid = temp_dict["humid"]
+# humid = temp_dict["humid"]
 
 unixtime = time.time()
 utcts = get_timestamp_utc()
 
-statement = f"INSERT INTO WZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
+statement = f"INSERT INTO WZ (time, unixtimestamp, timestamp, time_iso, temp) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp});"
+
+write_db(statement)
 
 print(output_temp("Wohnzimmer", temp))
 
