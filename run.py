@@ -1,25 +1,21 @@
 from funcs import *
 import time
-from datetime import datetime
-
-start_time = time.time()
+import classes
 
 # Tado data
 
 # Living room
 
-temp_dict = get_tempdata(1)
+temp_dict = classes.Room(name="Wohnzimmer", dbtable="WZ", ipaddress="192.168.178.178").get_shelly_lan()
 time_stamp_legacy = temp_dict["time"]
 timestamp_iso = temp_dict["timestamp_iso"]
 temp = temp_dict["temp"]
-humid = temp_dict["humid"]
+# humid = temp_dict["humid"]
 
 unixtime = time.time()
 utcts = get_timestamp_utc()
 
-statement = f"INSERT INTO WZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
-
-print(output_temp("Wohnzimmer", temp))
+statement = f"INSERT INTO WZ (time, unixtimestamp, timestamp, time_iso, temp) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp});"
 
 write_db(statement)
 
@@ -35,9 +31,6 @@ unixtime = time.time()
 utcts = get_timestamp_utc()
 
 statement = f"INSERT INTO BZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
-
-print(f"Badezimmer: {temp}")
-print(output_temp("Badezimmer", temp))
 
 write_db(statement)
 
@@ -59,8 +52,6 @@ if temp_dict:
 
     statement = f"INSERT INTO SZ (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
 
-    print(output_temp("Schlafzimmer", temp))
-
     write_db(statement)
 
 # Hue data - no humidity
@@ -77,8 +68,6 @@ unixtime = time.time()
 utcts = get_timestamp_utc()
 
 statement = f"INSERT INTO KU (time, unixtimestamp, timestamp, time_iso, temp, humid) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}', '{timestamp_iso}', {temp}, {humid});"
-
-print(output_temp("Küche", temp))
 
 write_db(statement)
 
@@ -97,10 +86,4 @@ utcts = get_timestamp_utc()
 
 statement = f"INSERT INTO OU (time, unixtimestamp, timestamp, time_iso, temp, humid, weathercond, precipitation) VALUES('{utcts}', {unixtime}, '{time_stamp_legacy}','{timestamp_iso}', {temp}, {humid}, '{cond}', {precipitation});"
 
-print(output_temp("Wetter", temp))
-
 write_db(statement)
-
-end_time = time.time()
-print(f"Elapsed time: {end_time - start_time:.2f} seconds")
-print(f"Execution time: {datetime.now()}")
