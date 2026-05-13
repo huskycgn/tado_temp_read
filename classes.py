@@ -30,7 +30,8 @@ class Room:
             # print(json_data)
             # print(json_data["current_C"])
         except:
-            return 0
+            output_dict = {"timestamp_iso": timestamp_iso, "time": timestamp, "temp": 0}
+            return output_dict
         temp = json_data["current_C"]
         output_dict = {"timestamp_iso": timestamp_iso, "time": timestamp, "temp": temp}
         return output_dict

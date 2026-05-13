@@ -7,7 +7,7 @@ start_time = time.time()
 
 # Living room
 
-temp_dict = classes.Room(name="Wohnzimmer", dbtable="WZ", ipaddress="192.168.178.178").get_shelly_lan()
+temp_dict = classes.Room(name="Wohnzimmer", dbtable="WZ", ipaddress="192.168.178.120").get_shelly_lan()
 time_stamp_legacy = temp_dict["time"]
 timestamp_iso = temp_dict["timestamp_iso"]
 temp = temp_dict["temp"]
